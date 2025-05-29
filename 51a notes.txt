@@ -1,0 +1,118 @@
+Springboot is a framework
+
+IMPORTANT INTERVIEW QUESTION
+In springboot, DESCRIBE ADVANTAGES?
+- You just specify one parent pom dependency
+- Spring has xml based configuration, whereas in springboot we can use java based annotation. So no need of a separate xml file.
+- You don't need to install external web container, it commes with an embedded one. We can change it as well
+- You can run your restful webservice as a standalone java application because of PSVM.(@SpringbootApplication)
+- It has supports for various module, spring-data which uses hibernate, it is an abstraction for database operations.
+  We can just change value of the property if we wish to change the database type.
+
+
+@RequestHeader annotation lets us access values contained in the response header.
+You can use a Map object to capture the response header in your java code.
+Map<String, String> headerVariable like this.
+First String is for specifying that key will be of String type
+Second String is for specifying that value of that key also will be of type String.
+
+Accessing headers of a response is cool, but how is it useful to us, a Developer ?
+- For same type of request, we can have multiple business scenarios which are using data from response header, and based on that
+  we can implement if..else based strategy for that request and handle multiple scenarios.
+- It is also helpful, when we can't change method signatures for any live applications, we can use headers to send and receive extra information.
+  In this way we won't break existing live application and avoid altering existing method signatures.
+
+
+
+REST-ASSURED
+=================
+It is an API Client, similar to POSTMAN, which doesn't have a UI. We use coding to send requests to endpoints and receive response.
+Inbuilt methods of Rest-Assured lets us access the response body, headers etc, which we can use for our testing.
+
+
+
+  
+IMPORTANT INTERVIEW QUESTION
+
+What libraries have you used for mocking ?
+-For developers: Mockito
+ You can simulate/mimick the behaviour with Mockito if the actual implementation is still not finished.
+ It can help to deal with being dependent on other team to provide implementation.
+ Example: If there is no method implementation of calculator relatted methods, using Mockito we can simulate such behaviour.
+	  If a database is not created, it lets us mimick a behaviour of a database.
+
+
+
+JSON Simple
+=========================
+JSON to java conversion and vice-versa happens with dependencies/libraries like GSON, Jackson, JSON Simple.
+This process is called serialization-deserialization.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+🌱 Spring Boot: Overview and Advantages
+🔹 What is Spring Boot?
+Spring Boot is a framework built on top of the Spring Framework. It simplifies the development of production-ready Spring applications by providing:
+
+Auto-configuration
+Standalone applications
+Embedded servers
+Minimal Spring configuration
+🔹 Key Advantages of Spring Boot
+Feature	Description
+Single Dependency Management	You only need to specify a single parent pom.xml dependency (spring-boot-starter-parent) which brings in all required dependencies.
+Annotation-based Configuration	Eliminates the need for verbose XML configuration. Uses annotations like @Configuration, @ComponentScan, and @SpringBootApplication.
+Embedded Web Server	Comes with embedded servers like Tomcat, Jetty, or Undertow. No need to deploy WAR files to external servers.
+Standalone Execution	Applications can be run directly using the main() method. The @SpringBootApplication annotation enables component scanning and auto-configuration.
+Modular Support	Supports modules like spring-boot-starter-data-jpa, spring-boot-starter-web, etc. Easily switch databases by changing properties in application.properties.
+📬 @RequestHeader Annotation in Spring Boot
+🔹 Purpose
+Used to access HTTP request headers in controller methods.
+
+🔹 Syntax
+
+🔹 Use Cases
+Dynamic Business Logic: Use headers to differentiate between business scenarios.
+Backward Compatibility: Pass additional data without changing method signatures in live applications.
+🧪 REST-Assured for API Testing
+🔹 What is REST-Assured?
+A Java library for testing RESTful APIs. It allows you to send HTTP requests and validate responses using code.
+
+🔹 Key Features
+No UI (unlike Postman)
+Fluent API for writing readable tests
+Supports validation of response body, headers, status codes, etc.
+🔹 Example
+
+🧪 Mocking with Mockito
+🔹 What is Mockito?
+A popular Java mocking framework used in unit testing.
+
+🔹 Use Cases
+Simulate behavior of classes not yet implemented.
+Isolate components by mocking dependencies like databases, services, etc.
+🔹 Example
+
+🔄 JSON Serialization & Deserialization
+🔹 What is it?
+The process of converting Java objects to JSON (serialization) and JSON to Java objects (deserialization).
+
+🔹 Libraries
+Jackson
+GSON
+JSON Simple
+🔹 Example with Jackson
+ObjectMapper mapper = new ObjectMapper();
+String json = mapper.writeValueAsString(myObject); // Serialization
+MyClass obj = mapper.readValue(json, MyClass.class); // Deserialization
