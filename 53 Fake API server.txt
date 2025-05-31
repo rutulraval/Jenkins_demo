@@ -1,0 +1,200 @@
+We need the structure of request and response beforehand, well before any development is done.
+It is done by the whole team following meetings with BAs, POs etc.
+
+After that we develop a JSON Server which can mimic the behaviour of the expected application. It can send and receive expected JSON objects.
+And when we have that, as a tester we can start working simultaneously with the developers as they start developing actual API.
+That means we can write test-cases that assert certain requests and responses with mocked request and response objects.
+Of course, we will be using hard-coded responses with our JSON Server. It will be replaced as and when the actual API is developed completely.
+
+JSON Server comes with Node, server side javascript runtime environment is called NodeJS.
+By using utilities that comes with this JSON Server and Node we can develop our fake API to mock expected behaviour.
+
+
+DOWNLOAD and INSTALL NODE on your computer.
+After that verify in CMD with : node -v
+
+It also brings one more tool called Node Package Manager also popularly called : npm, you can also check its version with npm -v
+
+
+DOWNLOAD and INSTALL JSON Server on your computer.
+with this command: npm install -g json-server
+
+
+
+Create a dummy json file called db.json
+
+To start JSON server: json-server --watch db.json
+(If you haven't created db.json beforehand as per your use-case, db.json file will be created with default data by JSON server)
+
+This way JSON server is providing some endpoints out of the box and you can start testing by just hitting that URI on your browser.
+If you want to customize this API t your needs, just change the content in your db.json file.
+
+When you change the content in your db.json file, and when you hit the localhost url once again, 
+it will show new endpoints that you have defined in your JSON file under RESOURCES.
+You can specify parameters like this: ?id=2 and it will GET you record associated with id 2.
+
+And then carry on with your assertions.
+
+
+IMPORTANT INTERVIEW QUESTION
+============================
+When do we use A mocking server ?
+What server for mocking you have used ?
+(Answer is all of above)
+
+
+✅ Mock API Workflow Using JSON Server
+1. Planning Phase
+Collaborate with BAs (Business Analysts), POs (Product Owners), and the development team to finalize:
+API request and response structures
+Expected endpoints, methods, and data formats
+2. Setup Phase
+Install Node.js (includes npm)
+
+Verify installation:
+
+node -v
+npm -v
+
+
+Install JSON Server globally:
+
+npm install -g json-server
+
+
+3. Create Mock Data
+Create a file named db.json with the expected data structure:
+
+{
+  "users": [
+    { "id": 1, "name": "Alice" },
+    { "id": 2, "name": "Bob" }
+  ]
+}
+
+
+4. Start JSON Server
+Run the server:
+
+json-server --watch db.json
+
+
+Access endpoints like:
+http://localhost:3000/users
+http://localhost:3000/users?id=2
+
+
+5. Testing Phase
+Testers can now:
+Write automated test cases using tools like Postman, Cypress, or Jest
+Assert mocked request/response behavior
+Use hardcoded responses until the real API is ready
+6. Transition to Real API
+Once the actual API is developed:
+Replace the mock server with the real backend
+Reuse and validate test cases against the real API
+📌 Common Interview Questions
+Q: When do we use a mocking server?
+A: When the actual backend is not yet developed, but frontend or testing needs to proceed in parallel.
+
+Q: What server have you used for mocking?
+A: JSON Server with Node.js.
+
+
+
+
+🔹 "We need the structure of request and response beforehand, well before any development is done."
+✅ Explanation:
+This means that the API contract (i.e., the expected request and response formats) must be defined before any code is written. This is often done using tools like Swagger/OpenAPI, Postman, or even simple JSON schemas.
+
+💡 Use-Cases:
+Frontend developers can start building UI components that consume the API.
+Testers can begin writing test cases based on the contract.
+Backend developers know exactly what to implement.
+⚠️ Edge-Cases:
+If the contract changes mid-development, it can break frontend or test code.
+Misalignment between teams if the contract is not version-controlled or documented properly.
+🌍 Real-World Scenario:
+In a banking app, the /transfer endpoint must be defined with fields like fromAccount, toAccount, amount, and currency. If this is not agreed upon early, the frontend might assume different field names or data types.
+
+🔹 "It is done by the whole team following meetings with BAs, POs etc."
+✅ Explanation:
+The API contract is a collaborative effort involving:
+
+Business Analysts (BAs) who understand the business needs
+Product Owners (POs) who prioritize features
+Developers and Testers who implement and validate the system
+💡 Use-Cases:
+Ensures that the API supports all required business workflows.
+Helps avoid rework due to miscommunication.
+⚠️ Edge-Cases:
+If stakeholders are not aligned, the API might miss critical fields or behaviors.
+Over-engineering the API for future use-cases that may never come.
+🌍 Real-World Scenario:
+In an e-commerce platform, the team agrees that the /checkout endpoint must support discount codes, gift cards, and multiple payment methods. This is captured in the contract early on.
+
+🔹 "After that we develop a JSON Server which can mimic the behaviour of the expected application."
+✅ Explanation:
+JSON Server is used to simulate the backend API. It reads from a JSON file and exposes RESTful endpoints automatically.
+
+💡 Use-Cases:
+Frontend can fetch data from the mock server as if it were the real backend.
+Testers can validate request/response flows.
+⚠️ Edge-Cases:
+JSON Server is read-only by default unless configured for POST/PUT/DELETE.
+It doesn’t support complex logic like authentication or business rules.
+🌍 Real-World Scenario:
+You create a db.json with a products array. JSON Server exposes /products, and the frontend can display a product list without waiting for the real backend.
+
+🔹 "It can send and receive expected JSON objects."
+✅ Explanation:
+JSON Server supports full CRUD operations (GET, POST, PUT, DELETE) and returns JSON responses based on the db.json file.
+
+💡 Use-Cases:
+Simulate form submissions (POST)
+Simulate updates (PUT/PATCH)
+Simulate deletions (DELETE)
+⚠️ Edge-Cases:
+It doesn’t validate data types or enforce schemas.
+No built-in support for nested business logic or workflows.
+🌍 Real-World Scenario:
+You POST a new user to /users, and JSON Server adds it to the db.json file and returns the new user object.
+
+🔹 "And when we have that, as a tester we can start working simultaneously with the developers as they start developing actual API."
+✅ Explanation:
+Mock APIs allow parallel development. Testers don’t have to wait for the backend to be ready.
+
+💡 Use-Cases:
+Write automated tests using tools like Postman, RestAssured, or Cypress.
+Validate edge cases like missing fields, invalid data, etc.
+⚠️ Edge-Cases:
+If the mock doesn’t match the final API, tests may fail later.
+Testers may assume behavior that the real API doesn’t support.
+🌍 Real-World Scenario:
+While the backend team is building /login, testers use the mock server to test login success, failure, and invalid credentials.
+
+🔹 "That means we can write test-cases that assert certain requests and responses with mocked request and response objects."
+✅ Explanation:
+Testers can write unit tests or integration tests that simulate API calls and validate the responses.
+
+💡 Use-Cases:
+Validate that a GET /users returns a list of users.
+Assert that a POST /orders returns a 201 status and correct order ID.
+⚠️ Edge-Cases:
+Mocked responses are static; they don’t reflect real-time data or logic.
+Cannot test performance or security aspects.
+🌍 Real-World Scenario:
+Using Postman, you send a POST /register request and assert that the response contains a userId and status: success.
+
+🔹 "Of course, we will be using hard-coded responses with our JSON Server. It will be replaced as and when the actual API is developed completely."
+✅ Explanation:
+Mock responses are static and predefined. Once the real API is ready, the mock is phased out.
+
+💡 Use-Cases:
+Helps in early UI development and testing.
+Acts as a fallback if the backend is unstable.
+⚠️ Edge-Cases:
+Risk of forgetting to update tests when switching to the real API.
+Hardcoded data may not reflect real-world edge cases.
+🌍 Real-World Scenario:
+Your mock /orders endpoint always returns 3 orders. The real API might return 0, 100, or fail due to business rules.
