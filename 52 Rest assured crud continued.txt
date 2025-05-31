@@ -1,0 +1,252 @@
+Rest-assured is used to automate web API testing.
+
+IMPORTANT INTERVIEW QUESTION
+PUT & PATCH
+====================
+In simple terms,
+PATCH is a partial update.
+PUT means replacing everything.
+
+
+
+
+after 01:12:00
+=====================
+EXAMPLES OF CRUD Operations with Rest-assured
+
+For a Greenfield project, you might not have the implementation of API in place at the beginning.
+We can use the available knowledge like what will be the structure of RESPONSE of proposed API.
+With the help of a local web-container we can use hard-coded JSON response to test the API in question.
+
+
+
+
+For Springboot instead of returning a specific object , we use ResponseEntity in RestAssured(I don't know is it RestAssured specific or Springboot specific )
+
+
+We can return a custom status code as well. We can do that by wrapping normal Response object of any type to ResponseEntity type.
+
+You specify return type of your method like this:-> ResponseEntity<Product> methodName(Arguments)
+You have to use a constructor of ResponseEntity class that takes HttpStatus object as its argument.
+This approach will let us Override status code.
+
+
+IMPORTANT INTERVIEW QUESTION FOR DEVELOPERS
+Exception handling in Rest-Assured and Restful Web Service
+------------------------------------------------------------------
+In normal Java application, we use try-catch for exception handling,
+for exception handling in Rest-assured, WE HAVE TO USE ANNOTATION @ControllerAdvice
+
+Create a package called Exception inside which 
+you create a new custom class which extends RuntimeException to handle exceptions in Restful Webservice framework.
+
+
+
+IMPORTANT INTERVIEW QUESTION
+
+SINGLETON CLASS RELATED QUESTIONS AND SCENARIOS PRESENTED IN INTERVIEW
+- Lazy Loading Eager Loading
+- Thread safety aspect
+- How we use Synchronized keyword to make it thread-safe.
+- What is the best way to create a singleton class.
+- Who creates objects in Enum ?(The JVM creates objects of ENUM when the class is loaded and that too only once.
+   We don't use new keyword for creating objects of ENUM)
+- This is why we should use ENUM concept for singleton class.
+- And this way you can describe and find out problems in presented question in the interview about singleton.
+
+
+
+
+
+
+
+
+
+🔁 PUT vs PATCH in REST APIs
+✅ PUT (Full Update)
+Definition: Replaces the entire resource with the new one.
+Idempotent: Yes (calling it multiple times has the same effect).
+Use Case: When you want to replace all fields of a resource.
+Example:
+PUT /users/123
+{
+  "name": "Alice",
+  "email": "alice@example.com"
+}
+
+
+If the original resource had a phone field, it will be removed unless included in the PUT body.
+
+✅ PATCH (Partial Update)
+Definition: Updates only the specified fields.
+Idempotent: Yes (in most cases).
+Use Case: When you want to update only a subset of fields.
+
+Example:
+PATCH /users/123
+{
+  "email": "newalice@example.com"
+}
+
+
+Only the email field is updated; other fields remain unchanged.
+
+🔍 Edge Cases
+PATCH with invalid fields: Should return 400 Bad Request.
+PUT with missing required fields: Should return 422 Unprocessable Entity.
+
+🔧 Best Practices
+Use DTOs for PATCH to avoid exposing full domain models.
+Validate PATCH payloads carefully to avoid partial corruption.
+Use JSON Merge Patch or JSON Patch (RFC 6902) for complex updates.
+
+
+
+🧪 CRUD Operations with Rest-Assured
+What is Rest-Assured?
+A Java DSL for simplifying testing of REST services.
+
+CRUD Mapping:
+Operation	HTTP Method		Example Endpoint
+Create		POST			/products
+Read		GET			/products/1
+Update		PUT/PATCH		/products/1
+Delete		DELETE			/products/1
+
+
+Example: Testing a GET API
+given()
+  .when()
+  .get("/products/1")
+  .then()
+  .statusCode(200)
+  .body("name", equalTo("Laptop"));
+
+
+
+🧪 Testing Without Backend (Greenfield)
+-Use mock servers like WireMock or hardcoded JSON responses.
+-Helps in contract-first development.
+
+
+🧰 ResponseEntity in Spring Boot
+What is ResponseEntity?
+A Spring class that represents the entire HTTP response: status code, headers, and body.
+🔹 Why Use It?
+To return custom status codes.
+To include headers.
+To control response structure.
+
+
+
+
+Not Rest-Assured Specific
+It’s a Spring Boot feature, not related to Rest-Assured.
+
+Example:
+@GetMapping("/product")
+public ResponseEntity<Product> getProduct() {
+    Product p = new Product("Laptop", 1000);
+    return new ResponseEntity<>(p, HttpStatus.OK);
+}
+
+
+
+Custom Status Code:
+return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+
+🛑 Exception Handling in Spring Boot (Not Rest-Assured)
+Use @ControllerAdvice for Global Exception Handling
+Steps:
+
+Create a custom exception:
+public class ProductNotFoundException extends RuntimeException {
+    public ProductNotFoundException(String message) {
+        super(message);
+    }
+}
+
+
+
+Create a handler:
+@ControllerAdvice
+public class GlobalExceptionHandler {
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<String> handleNotFound(ProductNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+}
+
+
+🔍 Edge Cases
+Handle MethodArgumentNotValidException for validation errors.
+Handle HttpMessageNotReadableException for malformed JSON.
+
+
+
+🧵 Singleton Class in Java
+What is Singleton?
+A class that allows only one instance to be created.
+
+🔄 Lazy vs Eager Loading
+Type	Description				Example
+Lazy	Instance created when needed		if (instance == null)
+Eager	Instance created at class loading	private static final Singleton instance = new Singleton();
+
+
+🧵 Thread Safety
+To make singleton thread-safe:
+public class Singleton {
+    private static Singleton instance;
+
+    private Singleton() {}
+
+    public static synchronized Singleton getInstance() {
+        if (instance == null) {
+            instance = new Singleton();
+        }
+        return instance;
+    }
+}
+
+
+✅ Best Practice: Enum Singleton
+public enum Singleton {
+    INSTANCE;
+
+    public void doSomething() {
+        // logic
+    }
+}
+
+
+Thread-safe
+Serialization-safe
+Reflection-safe
+JVM and Enum
+JVM creates enum instances when the class is loaded.
+You cannot create enum instances using new.
+
+
+
+
+
+
+
+
+📊 Flowchart: API Testing Lifecycle[Start]
+   ↓
+[Define API Contract]
+   ↓
+[Mock API Response (if backend not ready)]
+   ↓
+[Write Rest-Assured Tests]
+   ↓
+[Run Tests]
+   ↓
+[Validate Response: Status, Body, Headers]
+   ↓
+[Handle Exceptions]
+   ↓
+[End]
